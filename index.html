@@ -158,16 +158,16 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
 .fn .hit:hover b,.fn .hit:focus-visible b{text-decoration:underline;text-underline-offset:3px}
 .fn .hit:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 .fn .hit b{font-weight:700;color:var(--ink)}
-.rails{margin-top:18px;border-top:1px solid var(--ink)}
-.rail{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:72px minmax(40px,1fr) auto auto;gap:16px;align-items:center;width:100%;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
-.rail:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
-.rail .rk{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--mute)}
-.rail .ln{height:2px;background:var(--t4);position:relative}
-.rail .ln::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--t4);border-right:0}
-.rail .rt{font-weight:700;color:var(--ink)}
-.rail .rv{font-weight:900;color:var(--hot);white-space:nowrap}
-.rail:hover .ln,.rail:focus-visible .ln{background:var(--hot)}
-.rail:hover .ln::after,.rail:focus-visible .ln::after{border-left-color:var(--hot)}
+.fn-base{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%}
+.fn-base:focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:10px}
+.fb-ticks{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:26px}
+.fb-ticks i{justify-self:center;height:100%;border-left:2px dashed var(--t4);transition:border-color .2s}
+.fb-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 22px;border:1px solid var(--ink);border-radius:10px;background:var(--paper);transition:border-color .2s}
+.fb-k{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.08em;background:var(--ink);color:#fff;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.fb-t{font-size:15px;font-weight:700;color:var(--ink)}
+.fb-v{margin-left:auto;font-size:15px;font-weight:900;color:var(--hot);white-space:nowrap}
+.fn-base:hover .fb-bar,.fn-base:focus-visible .fb-bar{border-color:var(--hot)}
+.fn-base:hover .fb-ticks i,.fn-base:focus-visible .fb-ticks i{border-color:var(--hot)}
 .imp-sub{margin-top:64px}
 .imp-sub + .imp{margin-top:20px}
 @media (max-width:760px){
@@ -176,8 +176,10 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
   .fn .shape{height:52px;flex-direction:row;gap:10px;clip-path:none!important;border-radius:4px;margin-inline:auto}
   .fn .s0{width:100%}.fn .s1{width:88%}.fn .s2{width:76%}.fn .s3{width:66%}.fn .s4{width:58%}
   .fn .hits{padding:4px 0 10px}
-  .rail{grid-template-columns:52px minmax(0,1fr) auto;gap:10px}
-  .rail .ln{display:none}
+  .fb-ticks{display:none}
+  .fn-base{margin-top:8px}
+  .fb-bar{padding:14px 16px;gap:8px 12px}
+  .fb-v{margin-left:0}
 }
 
 /* history */
@@ -393,25 +395,59 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
 .lg span{display:inline-flex;align-items:center;gap:4px}
 .lg i{width:9px;height:9px;border-radius:2px}
 
-/* bookmarklet */
-.bmbar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mute)}
-.bm{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 10px;cursor:pointer;color:var(--ink)}
-.bm:hover{border-color:var(--hot);color:var(--hot)}
-.bm-stage{flex:1;padding:14px;display:flex;align-items:center;justify-content:center;min-height:240px}
-.atc{width:100%;max-width:420px;border:1px solid var(--line);border-radius:10px;padding:14px}
-.atc .lab{font-size:12px;font-weight:800;color:#1a73e8}
-.atc .vid,.ytp{aspect-ratio:16/9;border-radius:8px;background:repeating-linear-gradient(135deg,#E9E9E5 0 10px,#E1E1DC 10px 20px);display:flex;align-items:center;justify-content:center;margin-top:10px;position:relative}
-.atc .vid span,.ytp span{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
-.atc dl{display:grid;grid-template-columns:70px 1fr;gap:3px 8px;margin:10px 0 0;font-size:12px}
-.atc dt{color:var(--mute)}.atc dd{margin:0}
-.yt{width:100%;max-width:420px;animation:rise .4s ease}
-.ytp{background:#111}
-.ytp span{background:#FF0033}
-.ytp .prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:#444}
-.ytp .prog i{display:block;height:100%;width:0;background:#FF0033;animation:prog 6s linear forwards}
-.yt-t{font-weight:800;margin-top:10px;font-size:14px}
-.yt-u{font-family:var(--f-mono);font-size:11px;color:var(--mute)}
-.yt .back{font:inherit;font-size:12px;font-weight:700;margin-top:10px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 12px;cursor:pointer}
+/* tracking QA */
+.trk-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line)}
+.trk-bar .seg button,.trk-bar .ex{white-space:nowrap}
+.trk-main{flex:1;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);min-height:0}
+.lp-mini{padding:16px;display:flex;flex-direction:column;justify-content:center;gap:9px;background:#FBFBF9}
+.lp-hero{border-radius:8px;background:var(--ink);color:#fff;padding:14px}
+.lp-hero small{display:block;font-size:11px;opacity:.7}
+.lp-hero b{font-size:24px;font-weight:900;letter-spacing:-.03em}
+.lp-f{font-size:11px;color:var(--mute)}
+.lp-f span{display:block;margin-top:3px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 8px;font-size:12.5px;color:var(--ink)}
+.lp-go{font:inherit;font-size:14px;font-weight:800;border:0;border-radius:8px;background:var(--hot);color:#fff;padding:10px;cursor:pointer}
+.lp-go:disabled{opacity:.5;cursor:default}
+.trk-panel{border-left:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.trk-h{display:flex;align-items:center;justify-content:space-between;font-size:13px}
+.trk-st{font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px;background:#EFEFEA;color:var(--ink2)}
+.trk-st.good{background:#E3F4EA;color:#1F8A4C}
+.trk-st.bad,.trk-st.warn{background:#FCE6DE;color:var(--hot)}
+.trk-list{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.trk-list li{display:grid;grid-template-columns:20px minmax(0,1fr) auto;column-gap:8px;align-items:center;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:12.5px}
+.trk-list .ic{grid-row:span 2;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background:#EFEFEA;color:var(--mute)}
+.trk-list code{grid-column:2;font-family:var(--f-mono);font-size:10.5px;color:var(--mute)}
+.trk-list em{grid-column:3;grid-row:1 / span 2;font-style:normal;font-size:11px;font-weight:800;text-align:right}
+.trk-list li.good .ic{background:#1F8A4C;color:#fff}.trk-list li.good em{color:#1F8A4C}
+.trk-list li.bad,.trk-list li.warn{border-color:#F3B9A6;background:#FFF6F2}
+.trk-list li.bad .ic,.trk-list li.warn .ic{background:var(--hot);color:#fff}
+.trk-list li.bad em,.trk-list li.warn em{color:var(--hot)}
+.trk-sum{font-size:12px;color:var(--ink2);white-space:pre-line;min-height:2.6em}
+.trk-copy{align-self:flex-start;font:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 12px;cursor:pointer}
+.trk-copy:disabled{opacity:.4;cursor:default}
+@media (max-width:700px){.trk-main{grid-template-columns:1fr}.trk-panel{border-left:0;border-top:1px solid var(--line)}}
+
+/* more tools */
+.more{margin-top:56px;border-top:1px solid var(--line);padding-top:40px}
+.more-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.more-head h3{font-size:clamp(24px,2.6vw,32px);font-weight:900;letter-spacing:-.04em}
+.more-head h3 .it{font-size:1em;color:var(--t3)}
+.more-stats{display:flex;gap:28px}
+.more-stats div{display:flex;align-items:center;gap:10px}
+.more-stats b{font-size:34px;font-weight:900;letter-spacing:-.04em;line-height:1}
+.more-stats div:first-child b{color:var(--hot)}
+.more-stats span{font-size:12px;color:var(--mute);line-height:1.35}
+.more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px;align-items:start}
+.mg{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 20px 8px}
+.mg-h span{display:block;font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.mg-h b{display:block;font-size:17px;font-weight:900;letter-spacing:-.03em;margin-top:4px}
+.mg ul{list-style:none;margin:12px 0 0;padding:0}
+.mg li{padding:12px 0;border-top:1px solid var(--line)}
+.mg .mt{display:flex;flex-direction:column-reverse;gap:2px}
+.mg .mt b{font-size:14px;font-weight:800;letter-spacing:-.02em}
+.mg .mt small{font-family:var(--f-mono);font-size:10px;color:var(--mute)}
+.mg p{font-size:12.5px;color:var(--ink2);margin-top:4px;line-height:1.55}
+@media (max-width:1000px){.more-grid{grid-template-columns:1fr}.more-stats{gap:18px;flex-wrap:wrap}.more-stats b{font-size:28px}}
+
 .d-addr-run{animation:flash .6s ease}
 @keyframes rise{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 @keyframes prog{to{width:100%}}
@@ -614,16 +650,16 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
   <div class="wrap">
     <div class="imp-head">
       <div><div class="eyebrow">Impact</div><h2 style="margin-top:14px">숫자로 본 성과, <span class="it">by the numbers.</span></h2></div>
-      <p>예산을 늘리지 않고 소재·랜딩·매체·예산 배분을 바꿔 만든 변화입니다.</p>
+      <p>예산을 늘리지 않고, 소재·랜딩·매체·예산 배분만 바꿔 만든 결과입니다.</p>
     </div>
-    <div class="fn-sub"><b>어디를 고쳤나</b><span>광고가 예약이 되기까지 다섯 칸 중, 칸마다 직접 손댄 프로젝트입니다. 누르면 해당 케이스가 열립니다.</span></div>
+    <div class="fn-sub"><b>퍼널 단계별 개선</b><span>노출에서 예약까지 다섯 단계마다 병목을 찾아 바꿨습니다. 항목을 누르면 해당 케이스로 이동합니다.</span></div>
     <div class="fn" id="fn" role="list" aria-label="광고 퍼널 단계별 개선 프로젝트"><div class="st" role="listitem"><div class="shape s0"><b>노출</b><span>소재</span></div><div class="hits"><button type="button" class="hit" data-case="브이로그형"><em>−62%</em><b>브이로그형 소재</b> CPA</button><button type="button" class="hit" data-case="AI 모델 발화형"><em>당일</em><b>AI 발화형 소재</b> 제작 기간</button></div></div><div class="st" role="listitem"><div class="shape s1"><b>클릭</b><span>가격 표기</span></div><div class="hits"><button type="button" class="hit" data-case="9,900원"><em>−32%</em><b>9,900원 노출가</b> CPA</button></div></div><div class="st" role="listitem"><div class="shape s2"><b>DB 신청</b><span>랜딩</span></div><div class="hits"><button type="button" class="hit" data-case="4050 압축"><em>−29%</em><b>4050 압축 랜딩</b> CPA</button></div></div><div class="st" role="listitem"><div class="shape s3"><b>유효 DB</b><span>매체</span></div><div class="hits"><button type="button" class="hit" data-case="매체 확장"><em>−18%p</em><b>매체 확장</b> 무효 DB 비율</button></div></div><div class="st" role="listitem"><div class="shape s4"><b>예약</b><span>예산 배분</span></div><div class="hits"><button type="button" class="hit" data-case="예산 재배분"><em>+13%p</em><b>예약율 기준 재배분</b> DB→예약 전환</button></div></div></div>
-    <div class="rails">
-      <button type="button" class="rail" data-case="GA4"><span class="rk">측정</span><span class="ln" aria-hidden="true"></span><span class="rt">GA4·GTM·UTM 재설계로 다섯 칸을 매체별로 추적</span><span class="rv">유입 품질 구분</span></button>
-      <button type="button" class="rail" data-case="0→1"><span class="rk">0→1</span><span class="ln" aria-hidden="true"></span><span class="rt">커머스 채널과 광고를 처음부터 세팅</span><span class="rv">매출 ×4</span></button>
-    </div>
-    <div class="fn-sub imp-sub"><b>얼마나 바뀌었나</b><span>같은 지표 안에서 전과 후를 실제 비율대로 그렸습니다.</span></div>
-    <div class="imp" id="imp"><div class="ir"><div class="lab"><b>브이로그형 소재 CPA</b><span>도수치료 · Case 01</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">8,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:37.5%">3,000원대</div></div></div></div><div class="dl">−62%<small>변화</small></div></div><div class="ir"><div class="lab"><b>9,900원 노출가 소재 CPA</b><span>발톱 치료 · Case 02</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">25,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:68%">17,000원</div></div></div></div><div class="dl">−32%<small>변화</small></div></div><div class="ir"><div class="lab"><b>4050 압축 랜딩 CPA</b><span>발톱무좀 · Case 03</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">28,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:71.4%">20,000원</div></div></div></div><div class="dl">−29%<small>변화</small></div></div><div class="ir"><div class="lab"><b>무효 DB 비율</b><span>매체 확장 · Case 04</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">29%</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:37.9%">11%</div></div></div></div><div class="dl">−18%p<small>변화</small></div></div><div class="ir"><div class="lab"><b>DB → 예약 전환율</b><span>예산 재배분 · Case 05</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:69.8%">30%</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:100%">43%</div></div></div></div><div class="dl">+13%p<small>변화</small></div></div><div class="ir"><div class="lab"><b>커머스 매출 (시작 = 100)</b><span>마로마브 · 0→1 세팅</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:25%">100</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:100%">400</div></div></div></div><div class="dl">×4<small>변화</small></div></div></div>
+    <button type="button" class="fn-base" data-case="GA4">
+      <span class="fb-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="fb-bar"><span class="fb-k">측정 기반</span><span class="fb-t">GA4·GTM·UTM을 다시 설계해 다섯 단계를 매체별로 이어서 추적</span><span class="fb-v">매체별 유입 품질 측정 →</span></span>
+    </button>
+    <div class="fn-sub imp-sub"><b>개선 전후 비교</b><span>같은 지표의 개선 전·후를 실제 비율 그대로 그렸습니다.</span></div>
+    <div class="imp" id="imp"><div class="ir"><div class="lab"><b>브이로그형 소재 CPA</b><span>도수치료 · Case 01</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">8,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:37.5%">3,000원대</div></div></div></div><div class="dl">−62%<small>개선</small></div></div><div class="ir"><div class="lab"><b>9,900원 노출가 소재 CPA</b><span>발톱 치료 · Case 02</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">25,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:68%">17,000원</div></div></div></div><div class="dl">−32%<small>개선</small></div></div><div class="ir"><div class="lab"><b>4050 압축 랜딩 CPA</b><span>발톱무좀 · Case 03</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">28,000원</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:71.4%">20,000원</div></div></div></div><div class="dl">−29%<small>개선</small></div></div><div class="ir"><div class="lab"><b>무효 DB 비율</b><span>매체 확장 · Case 04</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:100%">29%</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:37.9%">11%</div></div></div></div><div class="dl">−18%p<small>개선</small></div></div><div class="ir"><div class="lab"><b>DB → 예약 전환율</b><span>예산 재배분 · Case 05</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:69.8%">30%</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:100%">43%</div></div></div></div><div class="dl">+13%p<small>개선</small></div></div><div class="ir"><div class="lab"><b>커머스 매출 (시작 = 100)</b><span>마로마브 · 0→1 세팅</span></div><div class="bars2"><div class="bl b"><span>전</span><div class="tk"><div class="fl" style="width:25%">100</div></div></div><div class="bl a good"><span>후</span><div class="tk"><div class="fl" style="width:100%">400</div></div></div></div><div class="dl">×4<small>개선</small></div></div></div>
   </div>
 </section>
 
@@ -632,7 +668,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
     <div class="head">
       <div class="eyebrow">History</div>
       <h2 style="margin-top:14px">Project<br>History</h2>
-      <p>회사별 주요 프로젝트입니다. 항목을 누르면 문제, 실행, 결과가 펼쳐집니다.</p>
+      <p>회사별 대표 프로젝트입니다. 항목을 누르면 문제 → 실행 → 결과 순으로 펼쳐집니다.</p>
     </div>
     <div id="eras"></div>
   </div>
@@ -643,7 +679,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
     <div class="pt-head">
       <div>
         <div class="eyebrow">Stack</div>
-        <h2 style="margin-top:14px">내 마케팅 스택의<span class="it">periodic table.</span></h2>
+        <h2 style="margin-top:14px">마케팅 스택,<span class="it">periodic table.</span></h2>
       </div>
       <div class="filters" id="filters" role="group" aria-label="분류 필터"></div>
     </div>
@@ -662,7 +698,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
     <div class="built-head">
       <div class="eyebrow">Built</div>
       <h2 style="margin-top:14px">직접 만든 도구, <span class="it">things I've built.</span></h2>
-      <p>반복되는 일은 도구로 만듭니다. AI(Claude)와 함께 만들어 팀이 매일 쓰는 것들입니다. 각 카드 안의 화면은 직접 눌러 볼 수 있는 작동 데모예요. 숫자는 예시 데이터입니다.</p>
+      <p>반복되는 일은 도구로 만듭니다. Claude와 함께 설계하고 만들어 실무에서 매일 쓰는 것들입니다. 아래 다섯 개는 직접 조작해 볼 수 있는 작동 데모이며, 숫자는 예시 데이터입니다.</p>
     </div>
     <div class="acc" id="acc">
 
@@ -674,7 +710,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
             <div class="eyebrow">Dashboard</div>
             <h3>광고 성과 대시보드</h3>
             <p class="what">데일리·주간·마스터 시트 3종을 합쳐 경영진이 한 화면에서 매체별 성과를 보는 웹 대시보드입니다.</p>
-            <dl><dt>문제</dt><dd>시트마다 최신도와 지표 정의가 달라 그대로 읽으면 숫자가 틀림</dd><dt>해결</dt><dd>시트별 우선순위와 지표 기준을 정리해 한 번에 계산</dd><dt>써 보기</dt><dd>기간과 매체를 바꿔 보세요</dd></dl>
+            <dl><dt>문제</dt><dd>시트마다 갱신 시점과 지표 정의가 달라, 그대로 합치면 숫자가 어긋남</dd><dt>해결</dt><dd>시트별 우선순위와 지표 기준을 정리해 한 번에 계산</dd><dt>체험</dt><dd>기간과 매체를 바꿔 보세요</dd></dl>
           </div>
           <div class="demo" id="d-dash">
             <div class="d-top"><b>광고 성과</b><div class="seg" data-k="range"><button type="button" data-v="7" aria-pressed="false">7일</button><button type="button" data-v="14" aria-pressed="true">14일</button><button type="button" data-v="30" aria-pressed="false">30일</button></div><div class="seg" data-k="media"><button type="button" data-v="all" aria-pressed="true">전체</button><button type="button" data-v="meta" aria-pressed="false">Meta</button><button type="button" data-v="google" aria-pressed="false">Google</button></div><span class="ex">예시 데이터</span></div>
@@ -694,7 +730,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
             <div class="eyebrow">Workspace</div>
             <h3>광고 운영 워크스페이스</h3>
             <p class="what">기수별 성과, 위닝 소재, 주간 보고를 탭으로 나눠 팀이 함께 보는 운영 화면입니다.</p>
-            <dl><dt>문제</dt><dd>성과·소재·보고 자료가 여러 시트에 흩어져 회의 때마다 찾아 붙임</dd><dt>해결</dt><dd>탭 하나로 모으고 주간 보고 문장은 자동으로 생성</dd><dt>써 보기</dt><dd>탭을 눌러 보세요</dd></dl>
+            <dl><dt>문제</dt><dd>성과·소재·보고 자료가 여러 시트에 흩어져, 회의 때마다 찾아 모아야 했음</dd><dt>해결</dt><dd>한 화면의 탭으로 모으고, 주간 보고 문장은 자동 생성</dd><dt>체험</dt><dd>탭을 눌러 보세요</dd></dl>
           </div>
           <div class="demo" id="d-ws">
             <div class="d-top"><div class="tabs" role="tablist"><button type="button" role="tab" data-t="cohort" aria-selected="true">기수별 성과</button><button type="button" role="tab" data-t="win" aria-selected="false">위닝 소재</button><button type="button" role="tab" data-t="report" aria-selected="false">주간 보고</button></div><span class="ex">예시 데이터</span></div>
@@ -711,7 +747,7 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
             <div class="eyebrow">Chrome Extension</div>
             <h3>위닝 소재 수집 크롬 확장</h3>
             <p class="what">메타 광고 라이브러리에서 오래 살아남은 경쟁사 광고에 집행일수 배지를 붙이고, 수집 버튼 하나로 저장과 대본 받아쓰기까지 합니다.</p>
-            <dl><dt>문제</dt><dd>레퍼런스 광고를 찾고 저장하고 받아쓰는 데 매번 손이 많이 감</dd><dt>해결</dt><dd>오래 집행된 광고 = 효율이 검증된 광고. 배지로 바로 보이게</dd><dt>써 보기</dt><dd>배지를 켜고, 광고를 수집한 뒤 받아쓰기를 눌러 보세요</dd></dl>
+            <dl><dt>문제</dt><dd>레퍼런스 광고를 찾고, 저장하고, 받아쓰는 과정이 매번 수작업</dd><dt>해결</dt><dd>오래 집행된 광고일수록 효율이 검증된 광고라는 기준으로, 집행일수를 배지로 표시</dd><dt>체험</dt><dd>배지를 켜고, 광고를 수집한 뒤 받아쓰기를 눌러 보세요</dd></dl>
           </div>
           <div class="demo" id="d-ext">
             <div class="browser"><div class="url"><i></i><i></i><i></i><span>facebook.com/ads/library</span><button type="button" class="ext-ic" aria-label="확장 프로그램">T</button></div>
@@ -729,8 +765,8 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
           <div class="desc">
             <div class="eyebrow">Tracking Sheet</div>
             <h3>예약율 추적 시트</h3>
-            <p class="what">병원 DB가 실제 예약으로 이어지는 비율을 캠페인별로 추적해 예산을 옮긴 시트입니다. 실제로 예약 전환율을 30%에서 43%로 올렸습니다.</p>
-            <dl><dt>기준</dt><dd>예약율 40% 이상 증액, 30% 미만 감액</dd><dt>써 보기</dt><dd>DB와 예약 숫자를 바꿔 보세요. 판단과 예산 배분이 바로 바뀝니다</dd></dl>
+            <p class="what">병원 DB가 실제 예약으로 이어진 비율을 캠페인별로 추적하고, 그 기준으로 예산을 옮긴 시트입니다. 이 시트로 DB→예약 전환율을 30%에서 43%로 올렸습니다.</p>
+            <dl><dt>기준</dt><dd>예약율 40% 이상 증액, 30% 미만 감액</dd><dt>체험</dt><dd>DB와 예약 숫자를 바꿔 보세요. 판단과 예산 배분이 바로 바뀝니다</dd></dl>
           </div>
           <div class="demo" id="d-sheet">
             <div class="d-top"><b>캠페인별 예약율</b><span class="ex">예시 데이터</span></div>
@@ -741,28 +777,45 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
       </div>
 
       <div class="pane">
-        <button type="button" class="opener" aria-label="투명성센터에서 유튜브로 버튼 열기"></button>
-        <div class="vt"><span>05</span><b>투명성센터 → 유튜브</b><span>2026</span></div>
+        <button type="button" class="opener" aria-label="전환 추적 점검 열기"></button>
+        <div class="vt"><span>05</span><b>전환 추적 점검</b><span>2026</span></div>
         <div class="body">
           <div class="desc">
-            <div class="eyebrow">Bookmarklet</div>
-            <h3>투명성센터 → 유튜브 버튼</h3>
-            <p class="what">구글 광고 투명성센터의 경쟁사 영상 광고에서, 북마크 한 번 클릭으로 원본 유튜브 영상을 여는 버튼입니다.</p>
-            <dl><dt>문제</dt><dd>투명성센터에서는 영상 원본을 찾기 번거로워 레퍼런스 분석이 늦어짐</dd><dt>해결</dt><dd>페이지 안의 영상 ID를 찾아 유튜브 주소로 바로 이동</dd><dt>써 보기</dt><dd>북마크바의 버튼을 눌러 보세요</dd></dl>
+            <div class="eyebrow">Tracking QA</div>
+            <h3>전환 추적 점검</h3>
+            <p class="what">랜딩에서 신청 폼을 한 번 제출하면, 매체별 전환 신호가 제대로 나갔는지 바로 판정하는 크롬 확장 기능입니다.</p>
+            <dl><dt>문제</dt><dd>전환 태그 누락·중복은 광고를 켜고 며칠 뒤 숫자가 어긋나야 드러남</dd><dt>해결</dt><dd>탭의 요청을 읽어 메타·GA4·구글 애즈·틱톡·카카오 신호를 ✓·✗로, 10초 안 중복 발사는 경고로 표시</dd><dt>체험</dt><dd>상황을 고르고 신청하기를 눌러 보세요</dd></dl>
           </div>
-          <div class="demo" id="d-bm">
+          <div class="demo" id="d-trk">
             <div class="browser">
-              <div class="url"><i></i><i></i><i></i><span class="addr">adstransparency.google.com/advertiser/…/creative/…</span></div>
-              <div class="bmbar"><span>북마크</span><button type="button" class="bm">▶ 유튜브로 열기</button><span class="ex">예시 화면</span></div>
-              <div class="bm-stage">
-                <div class="atc"><div class="lab">광고 투명성 센터</div><div class="vid"><span>▶</span></div><dl><dt>광고주</dt><dd>경쟁사 A</dd><dt>형식</dt><dd>동영상</dd><dt>최근 게재</dt><dd>어제</dd></dl></div>
-                <div class="yt" hidden><div class="ytp"><span>▶</span><div class="prog"><i></i></div></div><div class="yt-t">경쟁사 A 광고 원본 영상</div><div class="yt-u">youtube.com/watch?v=…</div><button type="button" class="back">다시 해보기</button></div>
+              <div class="url"><i></i><i></i><i></i><span>event-landing.example/apply</span></div>
+              <div class="trk-bar"><div class="seg" data-k="sc"><button type="button" data-v="ok" aria-pressed="true">정상</button><button type="button" data-v="miss" aria-pressed="false">구글 누락</button><button type="button" data-v="dup" aria-pressed="false">메타 중복</button></div><span class="ex">예시 화면</span></div>
+              <div class="trk-main">
+                <div class="lp-mini">
+                  <div class="lp-hero"><small>첫 방문 이벤트가</small><b>9,900원</b></div>
+                  <div class="lp-f">이름<span>홍길동</span></div>
+                  <div class="lp-f">연락처<span>010-0000-0000</span></div>
+                  <button type="button" class="lp-go">신청하기</button>
+                </div>
+                <aside class="trk-panel" aria-live="polite">
+                  <div class="trk-h"><b>추적 점검</b><span class="trk-st">대기 중</span></div>
+                  <ul class="trk-list"></ul>
+                  <div class="trk-sum"></div>
+                  <button type="button" class="trk-copy" disabled>결과 복사</button>
+                </aside>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+    </div>
+    <div class="more" id="more">
+      <div class="more-head">
+        <h3>이 밖에 만든 도구 <span class="it">and more.</span></h3>
+        <div class="more-stats"><div><b>20</b><span>직접 만든 도구·기능</span></div><div><b>10</b><span>그중 크롬 확장<br>하나에 담은 기능</span></div><div><b>3</b><span>매일 알아서 도는<br>자동화</span></div></div>
+      </div>
+      <div class="more-grid"><div class="mg"><div class="mg-h"><span>Data · Report</span><b>데이터 · 보고 자동화</b></div><ul><li><div class="mt"><b>광고 원본 데이터 자동 적재</b><small>Google Ads Script · Meta API</small></div><p>매일 아침 내려받아 붙여넣던 광고별 성과를 시트에 자동으로 쌓습니다. 빠진 날짜는 다음 실행 때 채웁니다.</p></li><li><div class="mt"><b>광고 현황 보고 생성기</b><small>Node.js</small></div><p>집행 중 캠페인의 소진율·CPA·이전 기수 비교·예상 DB를 보고 양식 문장으로 뽑습니다. 사람은 대응 방향만 씁니다.</p></li><li><div class="mt"><b>GA4 랜딩 퍼널 리포트</b><small>Apps Script · GA4 API</small></div><p>랜딩별 조회 → 신청 시도 → 신청 완료를 나란히 비교해, GA를 몰라도 먼저 고칠 랜딩을 고를 수 있게 했습니다.</p></li><li><div class="mt"><b>랜딩 성과 카드</b><small>크롬 확장</small></div><p>랜딩 페이지를 열면 그 자리에 신청률, 같은 유형 평균 대비, 매체별 신청률이 뜹니다.</p></li><li><div class="mt"><b>광고 데이터 지도</b><small>HTML</small></div><p>캠페인 이름 → 매체 세팅 → UTM → GA4·픽셀 → 시트 → 보고 화면이 어떻게 이어지는지 한 장으로 그렸습니다.</p></li></ul></div><div class="mg"><div class="mg-h"><span>Setup · QA</span><b>세팅 · 검수</b></div><ul><li><div class="mt"><b>디맨드젠 캠페인 자동 입력</b><small>크롬 확장</small></div><p>캠페인·광고그룹·광고 이름, 영상, 제목, 설명, UTM까지 차례로 입력하고 게시 버튼 앞에서 멈춥니다. 최종 확인은 사람이 합니다.</p></li><li><div class="mt"><b>소재 영상 일괄 업로드</b><small>크롬 확장 · YouTube API</small></div><p>영상 여러 개를 정한 순서대로 유튜브에 올리고, 구글 광고 등록용 작업 파일까지 만듭니다.</p></li><li><div class="mt"><b>광고 이름 규칙 검사</b><small>크롬 확장</small></div><p>메타·구글 관리자 화면에서 규칙에 어긋난 광고 이름에 빨간 밑줄과 이유를 표시해, 매체 간 성과 비교가 어긋나지 않게 합니다.</p></li><li><div class="mt"><b>표 복사 + 지표 계산</b><small>크롬 확장</small></div><p>광고 관리자·GA4 표를 엑셀로 복사하면서 CTR·CPC·CPA 칸을 붙이고, 평균에서 크게 벗어난 행을 표시합니다.</p></li></ul></div><div class="mg"><div class="mg-h"><span>Creative · Reference</span><b>소재 · 레퍼런스</b></div><ul><li><div class="mt"><b>경쟁 광고 자동 관찰</b><small>크롬 확장 · Whisper</small></div><p>경쟁 광고주의 집행 중 광고를 6시간마다 기록하고, 28일 이상 살아남은 영상은 자동으로 받아씁니다.</p></li><li><div class="mt"><b>영상 첫 8초 후킹 추출</b><small>Whisper · OCR</small></div><p>광고 영상 앞 8초의 첫마디와 화면 자막을 뽑아, 오래 집행된 순으로 후킹 모음을 만듭니다.</p></li><li><div class="mt"><b>디자인 레퍼런스 보관함</b><small>크롬 확장</small></div><p>랜딩·상세페이지를 저장하면 전체 캡처·문구·가격·색을 남기고, 다시 저장하면 바뀐 가격과 문구를 비교합니다.</p></li><li><div class="mt"><b>숏츠 성과 수집기</b><small>Node.js · YouTube API</small></div><p>경쟁 채널·키워드에서 조회수가 높게 나온 숏츠를 뽑아 표로 저장합니다.</p></li><li><div class="mt"><b>투명성센터 → 유튜브 버튼</b><small>북마클릿</small></div><p>구글 광고 투명성센터의 경쟁사 영상 광고를 클릭 한 번으로 원본 유튜브에서 엽니다.</p></li><li><div class="mt"><b>광고 대본 기획 스킬</b><small>Claude Skill</small></div><p>레퍼런스 영상을 줄 단위로 받아써 우리 상품으로 바꿔 쓰고, 첫 문장 유형과 헤드카피 문법을 적용합니다.</p></li></ul></div></div>
     </div>
   </div>
 </section>
@@ -860,16 +913,18 @@ section.block{padding-block:120px;border-bottom:1px solid var(--line);overflow:h
 /* ---------- Project History ---------- */
 const ERAS=[
  {yr:'2026',co:'TTA 컴퍼니<br>교육 플랫폼',items:[
-  {t:'GA4·GTM 측정 구조 재설계',tags:['트래킹','UTM'],res:'유입 품질 구분',plain:true,
-   d:{s:[['문제','매체별 유입이 섞여 어떤 광고가 좋은 신청자를 데려오는지 구분이 안 됨'],['실행','GA4·GTM 측정 구조와 UTM 규칙을 새로 설계']],out:'매체별 유입 품질을 따로 볼 수 있게 됨'}},
+  {t:'GA4·GTM 측정 구조 재설계',tags:['트래킹','UTM'],res:'매체별 유입 품질 측정',plain:true,
+   d:{s:[['문제','매체·소재별 유입이 한데 섞여, 어떤 광고가 실제 신청으로 이어지는지 판단할 수 없었음'],['실행','랜딩 조회 → 신청 시도 → 신청 완료 이벤트를 GA4·GTM으로 새로 설계하고, 메타·구글 캠페인 이름과 UTM 규칙을 하나로 통일']],out:'매체·소재·랜딩별로 신청까지의 흐름을 나눠 보고, 먼저 고칠 랜딩을 골라낼 수 있게 됨'}},
   {t:'성과 대시보드 · 데일리 리포트 자동화',tags:['데이터','자동화'],res:'시트 3종 → 1화면',plain:true,
-   d:{s:[['문제','시트 3종을 매일 손으로 맞춰 보고'],['실행','대시보드와 데일리 리포트를 자동화 (아래 Built 참고)']],out:'매일 손으로 하던 시트 취합·보고가 크게 줄어, 그 시간을 소재·운영에 씀'}}
+   d:{s:[['문제','데일리·주간·마스터 시트 3종을 매일 손으로 대조해 보고서를 작성'],['실행','광고 원본 데이터 적재부터 대시보드, 현황 보고 문장까지 자동화 (아래 Built 참고)']],out:'반복 취합·보고에 쓰던 시간을 소재 기획과 운영에 투입'}},
+  {t:'광고 세팅·검수 자동화',tags:['크롬 확장','Google Ads'],res:'게시 직전까지 자동',plain:true,
+   d:{s:[['문제','소재 업로드 → 유튜브 등록 → 디맨드젠 광고 입력을 광고마다 손으로 반복. 이름·UTM이 하나만 틀려도 매체 간 성과 비교가 어긋남'],['실행','영상 일괄 업로드 → 광고 작업 파일 생성 → 디맨드젠 캠페인 자동 입력을 하나로 잇고, 광고 이름 규칙 검사와 전환 추적 점검을 더함']],out:'사람은 마지막 검토와 게시만 하고, 이름·UTM·전환 누락은 집행 전에 잡아냄'}}
  ]},
  {yr:'2023–26',co:'오블리브앤파트너스<br>병원 MSO',items:[
   {t:'브이로그형 UGC 소재 · 도수치료',tags:['소재','촬영·편집'],res:'CPA ▼62%',
    d:{s:[['문제','시술명·가격 나열형 소재가 경쟁 병원과 똑같아 CPA 8,000원대에서 정체'],['가설','실제 방문 스토리가 가격보다 신뢰를 먼저 만든다'],['실행','모델을 직접 모집해 병원 방문 과정을 브이로그로 촬영·편집']],from:'8,000원',to:'3,000원대',pair:['vlog_before','가격 나열형','vlog_after','방문 브이로그형']}},
   {t:'노출가 9,900원 AB 테스트 · 발톱 치료',tags:['가격 표기','AB 테스트'],res:'CPA ▼32%',
-   d:{s:[['문제','"체험가 10,000원" 반복 노출로 가격 피로감'],['실행','혜택·구성·영상은 그대로, 노출가만 9,900원으로 바꿔 AB 테스트'],['배움','100원 차이의 인지 디테일로도 효율이 움직인다']],from:'25,000원',to:'17,000원',pair:['price_before','10,000원','price_after','9,900원']}},
+   d:{s:[['문제','"체험가 10,000원" 반복 노출로 가격 피로감'],['실행','혜택·구성·영상은 그대로, 노출가만 9,900원으로 바꿔 AB 테스트'],['인사이트','100원 차이의 인지 디테일로도 효율이 움직인다']],from:'25,000원',to:'17,000원',pair:['price_before','10,000원','price_after','9,900원']}},
   {t:'4050 압축 랜딩 · 발톱무좀',tags:['랜딩','GTM'],res:'CPA ▼29%',
    d:{s:[['문제','8개 섹션짜리 긴 모바일 랜딩에서 4050이 신청 전 이탈'],['실행','표지·이벤트가·신청폼·전후 사진만 남긴 압축 랜딩을 직접 만들고 GTM으로 추적, AB 테스트']],from:'28,000원',to:'20,000원',lp:true}},
   {t:'매체 확장 · 송도 지역',tags:['매체','TikTok·Google·당근'],res:'무효 DB ▼18%p',
@@ -925,7 +980,8 @@ const EL=[
  ['Gp','ChatGPT · Codex','ai','카피 아이디어와 코드 검증에 씁니다.'],
  ['Av','AI 모델 영상','ai','AI 모델 발화형 소재로 제작 리드타임을 수일에서 당일로 줄였습니다.'],
  ['Wh','Whisper','ai','경쟁사 광고 영상을 받아쓰기해 대본 구조를 분석합니다.'],
- ['Ce','Chrome 확장','ai','레퍼런스 수집과 위닝 소재 확인을 버튼 하나로 만들었습니다.']
+ ['Ce','Chrome 확장','ai','레퍼런스 수집, 디맨드젠 자동 입력, 전환 추적 점검 등 업무 기능 10개를 확장 하나에 담았습니다.'],
+ ['Gs','Google Ads 스크립트','ai','구글 광고 안에서 매일 광고별 성과를 시트로 자동 적재합니다.']
 ];
 const grid=document.getElementById('grid'),panel=document.getElementById('panel'),filters=document.getElementById('filters');
 grid.innerHTML=EL.map((e,i)=>`<button type="button" class="el ${CATS[e[2]][1]}" data-i="${i}" data-c="${e[2]}" aria-label="${e[1]}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="s">${e[0]}</span><span class="nm">${e[1]}</span></button>`).join('');
@@ -1045,14 +1101,30 @@ function rng(seed){let s=seed;return()=>{s=(s*9301+49297)%233280;return s/233280
  tb.addEventListener('input',calc);calc();
 })();
 
-/* ---------- Demo 5: bookmarklet ---------- */
+/* ---------- Demo 5: tracking QA ---------- */
 (function(){
- const root=document.getElementById('d-bm');if(!root)return;
- const atc=root.querySelector('.atc'),yt=root.querySelector('.yt'),addr=root.querySelector('.addr');
- const A='adstransparency.google.com/advertiser/…/creative/…';
- root.querySelector('.bm').addEventListener('click',()=>{if(!yt.hidden)return;addr.classList.add('d-addr-run');addr.textContent='영상 ID 찾는 중…';
-  setTimeout(()=>{addr.classList.remove('d-addr-run');addr.textContent='youtube.com/watch?v=…';atc.hidden=true;yt.hidden=false;const p=yt.querySelector('.prog i');p.style.animation='none';p.offsetWidth;p.style.animation=''},650)});
- root.querySelector('.back').addEventListener('click',()=>{yt.hidden=true;atc.hidden=false;addr.textContent=A});
+ const root=document.getElementById('d-trk');if(!root)return;
+ const list=root.querySelector('.trk-list'),st=root.querySelector('.trk-st'),sum=root.querySelector('.trk-sum'),cp=root.querySelector('.trk-copy'),go=root.querySelector('.lp-go');
+ const M=[['Meta 픽셀','Lead'],['GA4','generate_lead'],['Google Ads','전환 · 신청 완료'],['TikTok','SubmitForm'],['Kakao 픽셀','participation']];
+ const MSG={ok:'5개 매체 모두 신청 신호가 한 번씩 나갔습니다.',miss:'Google Ads 신청 전환이 나가지 않았습니다.\n전환 태그의 트리거를 확인하세요.',dup:'Meta Lead가 10초 안에 두 번 나갔습니다.\n전환이 실제보다 두 배로 잡힙니다.'};
+ let sc='ok',timers=[];
+ const res=i=>sc==='miss'&&i===2?['bad','✗','신호 없음']:sc==='dup'&&i===0?['warn','!','2회 · 중복']:['good','✓','1회'];
+ function reset(){timers.forEach(clearTimeout);timers=[];
+  list.innerHTML=M.map(m=>`<li><span class="ic">·</span><b>${m[0]}</b><code>${m[1]}</code><em></em></li>`).join('');
+  st.textContent='대기 중';st.className='trk-st';sum.textContent='';cp.disabled=true;cp.textContent='결과 복사';go.disabled=false}
+ function run(){reset();go.disabled=true;st.textContent='요청 읽는 중…';
+  const lis=list.querySelectorAll('li'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  M.forEach((m,i)=>timers.push(setTimeout(()=>{const [cl,ic,t]=res(i);lis[i].className=cl;lis[i].querySelector('.ic').textContent=ic;lis[i].querySelector('em').textContent=t;
+   if(i<M.length-1)return;
+   st.textContent=sc==='miss'?'누락 1':sc==='dup'?'중복 1':'모두 정상';st.className='trk-st '+(sc==='miss'?'bad':sc==='dup'?'warn':'good');
+   sum.textContent=MSG[sc];cp.disabled=false;go.disabled=false},reduce?0:320*(i+1))))}
+ root.querySelector('.seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  root.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));sc=b.dataset.v;reset()});
+ go.addEventListener('click',run);
+ cp.addEventListener('click',()=>{const txt='[추적 점검 결과]\n'+[...list.querySelectorAll('li')].map(li=>`${li.querySelector('.ic').textContent} ${li.querySelector('b').textContent} (${li.querySelector('code').textContent}) ${li.querySelector('em').textContent}`).join('\n');
+  const done=()=>{cp.textContent='복사됨';setTimeout(()=>cp.textContent='결과 복사',1400)};
+  try{navigator.clipboard.writeText(txt).then(done,()=>{sum.textContent=txt})}catch(e){sum.textContent=txt}});
+ reset();
 })();
 
 /* ---------- Works gallery ---------- */
