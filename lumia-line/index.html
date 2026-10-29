@@ -6,9 +6,11 @@
 <title>LUMIA CLINIC ソウル</title>
 <style>
   body { margin: 0; font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; background: #faf6f3; color: #3a2e2a; text-align: center; }
-  .wrap { padding: 72px 24px; }
-  h1 { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
-  p { font-size: 14px; color: #7a6a63; margin: 0 0 28px; line-height: 1.7; }
+  .wrap { min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding: 24px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 28px; }
+  .spin { width: 36px; height: 36px; margin: 0 auto 20px; border: 3px solid #e6dcd6; border-top-color: #06c755; border-radius: 50%; animation: r .8s linear infinite; }
+  @keyframes r { to { transform: rotate(360deg); } }
+  p { font-size: 14px; color: #7a6a63; margin: 0 0 28px; line-height: 1.7; font-family: sans-serif; }
   a.btn { display: none; max-width: 320px; margin: 0 auto; padding: 16px; border-radius: 999px; background: #06c755; color: #fff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 16px; }
 </style>
 <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -16,7 +18,8 @@
 <body>
 <div class="wrap">
   <h1>LUMIA CLINIC ソウル</h1>
-  <p id="msg">LINEのトーク画面を開いています…</p>
+  <div class="spin" id="spin"></div>
+  <p id="msg">まもなくトーク画面が開きます</p>
   <a class="btn" id="btn" href="#">LINEで相談する</a>
 </div>
 <script>
@@ -29,9 +32,13 @@
   var btn = document.getElementById('btn');
   btn.href = CHAT;
   function openChat() {
-    btn.style.display = 'block';
-    document.getElementById('msg').textContent = 'トーク画面が開かない場合はボタンを押してください。';
     location.replace(CHAT);
+    // 그래도 안 넘어가면 버튼을 보여 준다
+    setTimeout(function () {
+      document.getElementById('spin').style.display = 'none';
+      document.getElementById('msg').textContent = 'トーク画面が開かない場合はボタンを押してください。';
+      btn.style.display = 'block';
+    }, 2500);
   }
   function newCid() {
     var abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s = '';
@@ -48,10 +55,11 @@
       fbclid: q.get('fbclid') || '', fbp: q.get('fbp') || '', fbc: q.get('fbc') || '',
       ua: navigator.userAgent, url: q.get('lp') || 'liff'
     };
-    var done = false;
-    function go() { if (!done) { done = true; openChat(); } }
-    setTimeout(go, 4000);
-    fetch(GAS + '?a=liff', { method: 'POST', body: JSON.stringify(body) }).then(go, go);
+    // 웹앱 응답(2~3초)을 기다리지 않는다: sendBeacon은 페이지를 떠나도 전송이 이어진다
+    var data = JSON.stringify(body), sent = false;
+    try { sent = navigator.sendBeacon(GAS + '?a=liff', data); } catch (e) {}
+    if (!sent) fetch(GAS + '?a=liff', { method: 'POST', body: data, keepalive: true });
+    setTimeout(openChat, 300);
   }).catch(function () { openChat(); });
 </script>
 </body>
