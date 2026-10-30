@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>預約 | 露米雅皮膚科 Lumia Clinic</title>
+<style>
+  :root { --bg: #faf6f3; --ink: #3a2e2a; --sub: #7a6a63; --line: #e6dcd6; --green: #06c755; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; background: var(--bg); color: var(--ink); }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 28px 20px 40px; }
+  h1 { font-family: "Songti TC", "PMingLiU", serif; font-size: 21px; font-weight: 600; margin: 0 0 6px; text-align: center; }
+  .lead { font-size: 13px; color: var(--sub); text-align: center; margin: 0 0 28px; line-height: 1.7; }
+  label.t { display: block; font-size: 14px; font-weight: 700; margin: 22px 0 8px; }
+  label.t small { font-weight: 400; color: var(--sub); margin-left: 4px; }
+  .req { color: #d0454c; font-size: 11px; margin-left: 4px; }
+  input[type=text], input[type=date], textarea { width: 100%; padding: 13px 14px; font-size: 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-family: inherit; }
+  textarea { min-height: 88px; resize: vertical; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips input { display: none; }
+  .chips span { display: inline-block; padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 14px; }
+  .chips input:checked + span { border-color: var(--green); background: #eafaf0; color: #04813a; font-weight: 700; }
+  .err { color: #d0454c; font-size: 13px; min-height: 20px; margin: 18px 0 0; text-align: center; }
+  button { display: block; width: 100%; margin-top: 10px; padding: 16px; border: 0; border-radius: 999px; background: var(--green); color: #fff; font-size: 16px; font-weight: 700; font-family: inherit; }
+  button:disabled { opacity: .5; }
+  .note { font-size: 12px; color: var(--sub); text-align: center; margin-top: 14px; line-height: 1.6; }
+  #done { display: none; text-align: center; padding-top: 60px; }
+  #done .ok { width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 50%; background: var(--green); color: #fff; font-size: 30px; line-height: 56px; }
+  #done p { font-size: 14px; color: var(--sub); line-height: 1.8; margin: 0 0 28px; }
+</style>
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <form id="f" novalidate>
+    <h1>預約・諮詢申請</h1>
+    <p class="lead">露米雅皮膚科 Lumia Clinic<br>送出後，專人會透過LINE與您聯繫。</p>
+
+    <label class="t">姓名<span class="req">必填</span></label>
+    <input type="text" name="nm" autocomplete="name" placeholder="王小美">
+
+    <label class="t">想做的療程<span class="req">必填</span><small>可複選</small></label>
+    <div class="chips" id="items">
+      <label><input type="checkbox" value="麗珠蘭"><span>麗珠蘭</span></label>
+      <label><input type="checkbox" value="Onda拉提"><span>Onda拉提</span></label>
+      <label><input type="checkbox" value="想先諮詢再決定"><span>想先諮詢再決定</span></label>
+    </div>
+
+    <label class="t">希望到院日期<span class="req">必填</span></label>
+    <input type="date" name="date" id="date">
+
+    <label class="t">希望時段</label>
+    <div class="chips">
+      <label><input type="radio" name="time" value="上午"><span>上午</span></label>
+      <label><input type="radio" name="time" value="下午"><span>下午</span></label>
+      <label><input type="radio" name="time" value="都可以" checked><span>都可以</span></label>
+    </div>
+
+    <label class="t">到院人數</label>
+    <div class="chips">
+      <label><input type="radio" name="people" value="1位" checked><span>1位</span></label>
+      <label><input type="radio" name="people" value="2位"><span>2位</span></label>
+      <label><input type="radio" name="people" value="3位以上"><span>3位以上</span></label>
+    </div>
+
+    <label class="t">問題・需求<small>選填</small></label>
+    <textarea name="note" placeholder="在意的部位、在韓國停留期間等"></textarea>
+
+    <p class="err" id="err"></p>
+    <button type="submit" id="go">送出申請</button>
+    <p class="note">預約尚未確定。<br>待專人聯繫確認後才算完成。</p>
+  </form>
+
+  <div id="done">
+    <div class="ok">✓</div>
+    <h1>感謝您的申請</h1>
+    <p id="doneMsg">內容已傳到聊天室。<br>專人會依序與您聯繫。</p>
+    <button type="button" id="close">回到聊天室</button>
+  </div>
+</div>
+<script>
+  // 라인 리치 메뉴·상담 중 링크로 연다: https://liff.line.me/<BOOK_LIFF_ID>
+  // 제출하면 ① 웹앱(?a=book)에 기록·메타 Schedule ② 고객 이름으로 대화창에 요약을 올려 상담사가 채팅에서 바로 본다.
+  // ?preview=1 이면 라인 없이 화면만 본다(디자인 확인용).
+  var BOOK_LIFF_ID = '2012294400-duxvuRo2';  // 새 LIFF 앱(scope: openid + chat_message.write) ID
+  var GAS = 'https://script.google.com/macros/s/AKfycbzLewLi8zqCiKIJfLKQfFUHwT6GXHsH5lVE_0OhmqxmveFYkhTBQ7IPfjKYbW_TYqdfcw/exec';
+  var CHAT = 'https://line.me/R/oaMessage/' + encodeURIComponent('@904ijuar') + '/';
+  var prefill = '';
+  var PREVIEW = new URLSearchParams(location.search).get('preview') === '1' || typeof liff === 'undefined';
+
+  var f = document.getElementById('f'), err = document.getElementById('err'), go = document.getElementById('go');
+  var d = new Date(); d.setDate(d.getDate() + 1);
+  document.getElementById('date').min = d.toISOString().slice(0, 10);
+
+  var ready = PREVIEW ? Promise.resolve() : liff.init({ liffId: BOOK_LIFF_ID }).then(function () {
+    if (!liff.isLoggedIn()) liff.login({ redirectUri: location.href });
+  });
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var b = {
+      name: f.nm.value.trim(),
+      items: [].map.call(document.querySelectorAll('#items input:checked'), function (x) { return x.value; }),
+      date: f.date.value, time: f.time.value, people: f.people.value, note: f.note.value.trim()
+    };
+    if (!b.name) return show('請輸入姓名');
+    if (!b.items.length) return show('請選擇想做的療程');
+    if (!b.date) return show('請選擇希望到院日期');
+    show(''); go.disabled = true; go.textContent = '送出中…';
+
+    var summary = '【預約申請】\n姓名：' + b.name + '\n療程：' + b.items.join('、') +
+      '\n希望日期：' + b.date.replace(/-/g, '/') + '（' + b.time + '）\n人數：' + b.people +
+      (b.note ? '\n需求：' + b.note : '');
+
+    ready.then(function () {
+      if (PREVIEW) return;
+      b.idToken = liff.getIDToken();
+      var save = fetch(GAS + '?a=book', { method: 'POST', body: JSON.stringify(b), keepalive: true }).catch(function () {});
+      // sendMessages는 폼을 '연 대화방'에 올린다. 공식계정 1:1 대화(리치 메뉴·상담 링크)에서 연 경우만 쓰고,
+      // 그 밖(다른 대화방·외부 브라우저)이거나 실패하면 공식계정 대화창에 내용을 미리 채워 열어 준다(고객이 전송 한 번).
+      var ctx = (liff.getContext() || {}).type;
+      var chat = liff.isInClient() && ctx === 'utou'
+        ? liff.sendMessages([{ type: 'text', text: summary }]).then(function () { return true; }, function () { return false; })
+        : Promise.resolve(false);
+      return Promise.all([save, chat]).then(function (r) { if (!r[1]) prefill = CHAT + '?' + encodeURIComponent(summary); });
+    }).then(function () {
+      if (prefill) {
+        document.getElementById('doneMsg').innerHTML = '按下按鈕會開啟聊天室，<br>請直接<b>傳送</b>。';
+        document.getElementById('close').textContent = '在聊天室傳送內容';
+      }
+      f.style.display = 'none';
+      document.getElementById('done').style.display = 'block';
+      window.scrollTo(0, 0);
+    });
+  });
+
+  document.getElementById('close').onclick = function () {
+    if (prefill) location.href = prefill; else if (!PREVIEW && liff.isInClient()) liff.closeWindow(); else location.href = CHAT;
+  };
+  function show(m) { err.textContent = m; }
+</script>
+</body>
+</html>
