@@ -74,7 +74,7 @@
   <div id="done">
     <div class="ok">✓</div>
     <h1>お申し込みありがとうございます</h1>
-    <p>内容をトークに送りました。<br>担当者より順番にご連絡いたします。</p>
+    <p id="doneMsg">内容をトークに送りました。<br>担当者より順番にご連絡いたします。</p>
     <button type="button" id="close">トークに戻る</button>
   </div>
 </div>
@@ -85,6 +85,7 @@
   var BOOK_LIFF_ID = '2012269773-pFMODDg6';  // 새 LIFF 앱(scope: openid + chat_message.write) ID
   var GAS = 'https://script.google.com/macros/s/AKfycbz75UI7P8SJdwq1pPyMpPh9OT8B-G9ufX_fEwOQ2q89Y-KNmjal2Kqc3ZE8FSI0Jy_1-w/exec';
   var CHAT = 'https://line.me/R/oaMessage/' + encodeURIComponent('@811edwqi') + '/';
+  var prefill = '';
   var PREVIEW = new URLSearchParams(location.search).get('preview') === '1' || typeof liff === 'undefined';
 
   var f = document.getElementById('f'), err = document.getElementById('err'), go = document.getElementById('go');
@@ -115,11 +116,18 @@
       if (PREVIEW) return;
       b.idToken = liff.getIDToken();
       var save = fetch(GAS + '?a=book', { method: 'POST', body: JSON.stringify(b), keepalive: true }).catch(function () {});
-      var chat = liff.isInClient()
-        ? liff.sendMessages([{ type: 'text', text: summary }]).catch(function () {})
-        : Promise.resolve();
-      return Promise.all([save, chat]);
+      // sendMessages는 폼을 '연 대화방'에 올린다. 공식계정 1:1 대화(리치 메뉴·상담 링크)에서 연 경우만 쓰고,
+      // 그 밖(다른 대화방·외부 브라우저)이거나 실패하면 공식계정 대화창에 내용을 미리 채워 열어 준다(고객이 전송 한 번).
+      var ctx = (liff.getContext() || {}).type;
+      var chat = liff.isInClient() && ctx === 'utou'
+        ? liff.sendMessages([{ type: 'text', text: summary }]).then(function () { return true; }, function () { return false; })
+        : Promise.resolve(false);
+      return Promise.all([save, chat]).then(function (r) { if (!r[1]) prefill = CHAT + '?' + encodeURIComponent(summary); });
     }).then(function () {
+      if (prefill) {
+        document.getElementById('doneMsg').innerHTML = 'ボタンを押すとトーク画面が開きます。<br>そのまま<b>送信</b>してください。';
+        document.getElementById('close').textContent = '内容をトークで送る';
+      }
       f.style.display = 'none';
       document.getElementById('done').style.display = 'block';
       window.scrollTo(0, 0);
@@ -127,7 +135,7 @@
   });
 
   document.getElementById('close').onclick = function () {
-    if (!PREVIEW && liff.isInClient()) liff.closeWindow(); else location.href = CHAT;
+    if (prefill) location.href = prefill; else if (!PREVIEW && liff.isInClient()) liff.closeWindow(); else location.href = CHAT;
   };
   function show(m) { err.textContent = m; }
 </script>
