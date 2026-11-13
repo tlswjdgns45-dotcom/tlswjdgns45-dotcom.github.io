@@ -28,6 +28,9 @@
   var LIFF_ID = '2012570630-dyfEJCc7';
   var GAS = 'https://script.google.com/macros/s/AKfycbw7EUyuGZzs_vmNucIXXtL4AMc6UVuvyy2aYPyqMWnqnSYL3R0UHwzxHNMCvA0CMNxN/exec';
   var CHAT = 'https://line.me/R/oaMessage/' + encodeURIComponent('@117yaafh') + '/';
+  // t = 대화창에 미리 채울 문구(랜딩에서 고른 상품). ?text= 말고 ?<문구> 형식이어야 한다
+  var PRE = new URLSearchParams(location.search).get('t');
+  if (PRE) CHAT += '?' + encodeURIComponent(PRE.slice(0, 200));
 
   var btn = document.getElementById('btn');
   btn.href = CHAT;
